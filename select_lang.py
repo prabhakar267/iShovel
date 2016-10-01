@@ -1,0 +1,36 @@
+# -*- coding: utf-8 -*-
+# @Author: prabhakar
+# @Date:   2016-10-01 13:27:30
+# @Last Modified by:   Prabhakar Gupta
+# @Last Modified time: 2016-10-01 14:00:07
+
+import random
+from tabulate import tabulate
+from collections import OrderedDict
+
+lang = "Ruby Scala Node-JS Perl Rust".split(" ")
+score = [0] * len(lang)
+final_dict = {}
+final_list = []
+
+i = 0
+while i<100000:
+	ctr = random.choice(lang) 
+	score[lang.index(ctr)] += 1
+	i += 1
+
+sum_score =  sum(score)
+
+ctr = 0
+for i in score:
+	final_dict[lang[ctr]] = (float(i) / sum_score) * 100
+	ctr += 1
+
+
+od = OrderedDict(sorted(final_dict.items(), key=lambda(k,v):(v,k), reverse=True))
+
+for i in od:
+	final_list.append([i, od[i]]);
+
+print_headers = ["Language", "Percentage Score"]
+print tabulate(final_list, headers= print_headers, tablefmt='orgtbl')
