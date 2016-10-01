@@ -2,19 +2,24 @@
 # @Author: prabhakar
 # @Date:   2016-10-01 13:27:30
 # @Last Modified by:   Prabhakar Gupta
-# @Last Modified time: 2016-10-01 14:00:07
+# @Last Modified time: 2016-10-01 14:34:25
 
 import random
 from tabulate import tabulate
 from collections import OrderedDict
 
-lang = "Ruby Scala Node-JS Perl Rust".split(" ")
+filename = "languages"
+with open(filename, "r") as f:
+	lang = f.readlines()
+	lang = map(str.strip, lang)
+
 score = [0] * len(lang)
 final_dict = {}
 final_list = []
 
 i = 0
-while i<100000:
+COUNT = len(lang) * 1000
+while i < COUNT:
 	ctr = random.choice(lang) 
 	score[lang.index(ctr)] += 1
 	i += 1
