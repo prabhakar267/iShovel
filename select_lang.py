@@ -1,9 +1,3 @@
-# -*- coding: utf-8 -*-
-# @Author: prabhakar
-# @Date:   2016-10-01 13:27:30
-# @Last Modified by:   Prabhakar Gupta
-# @Last Modified time: 2016-10-01 14:34:25
-
 import random
 from tabulate import tabulate
 from collections import OrderedDict
