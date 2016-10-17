@@ -1,8 +1,11 @@
 import json
 import requests
+import os.path
+from time import strftime
 
 from credentials import username as master_username, password as master_password
 from constants import GITHUB_API_URL, USERS_API
+
 
 def get_user_data(username, scorecard):
 	try:
@@ -30,12 +33,12 @@ def get_user_data(username, scorecard):
 			for language in language_json.keys():
 				scorecard = update_lang_score(scorecard, language, language_json[language])
 
-		for i in scorecard.keys():
-			print scorecard[i], i
+		return scorecard
 	except requests.exceptions.ConnectionError:
 		print "Internet connection not found!"
 	except Exception, e:
 		print e
+
 
 def update_lang_score(scorecard, lang, score):
 	if lang in scorecard.keys():
@@ -44,3 +47,21 @@ def update_lang_score(scorecard, lang, score):
 		scorecard[lang] = score
 
 	return scorecard
+
+
+def store_score_card(username, scorecard):
+	res_path = "res/"
+
+	data = {
+		"cur_time" : strftime("%Y-%m-%d %H:%M:%S"),
+		"scorecard" : scorecard,
+	}
+
+	fname = res_path + username
+	with open(fname, 'w') as outfile:
+	    json.dump(data, outfile)
+
+
+def get_normalised_scorecard(scorecard):
+	normalised_scorecard = {}
+	return normalised_scorecard

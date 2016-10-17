@@ -89,3 +89,5 @@ ENV/
 .ropeproject
 
 credentials.py
+res/*
+!res/.gitkeep
