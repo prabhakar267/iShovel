@@ -1,11 +1,8 @@
-# -*- coding: utf-8 -*-
-# @Author: prabhakar
-# @Date:   2016-10-16 23:58:01
-# @Last Modified by:   Prabhakar Gupta
-# @Last Modified time: 2016-10-17 00:40:07
-
-from utils import get_user_data
+from utils import get_user_data, get_normalised_scorecard, store_score_card
 
 # username = raw_input("username:")
 username = "prabhakar267"
-get_user_data(username, {})
+x = get_user_data(username, {})
+# print x
+store_score_card(username, x)
+print get_normalised_scorecard(x)

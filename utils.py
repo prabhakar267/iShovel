@@ -1,13 +1,21 @@
 import json
 import requests
 import os.path
+import datetime
 from time import strftime
 
 from credentials import username as master_username, password as master_password
 from constants import GITHUB_API_URL, USERS_API
 
 
+res_path = "res/"
+
+
 def get_user_data(username, scorecard):
+	user_history = check_hist(username)
+	if user_history:
+		return user_history
+
 	try:
 		url = GITHUB_API_URL + USERS_API + username + "/repos?per_page=100&type=all"
 		response = requests.get(url, auth=(master_username, master_password))
@@ -50,8 +58,6 @@ def update_lang_score(scorecard, lang, score):
 
 
 def store_score_card(username, scorecard):
-	res_path = "res/"
-
 	data = {
 		"cur_time" : strftime("%Y-%m-%d %H:%M:%S"),
 		"scorecard" : scorecard,
@@ -59,9 +65,29 @@ def store_score_card(username, scorecard):
 
 	fname = res_path + username
 	with open(fname, 'w') as outfile:
-	    json.dump(data, outfile)
+		json.dump(data, outfile)
 
+
+def check_hist(username):
+	fname = res_path + username
+
+	if os.path.isfile(fname):
+		with open(fname) as outfile:
+			data = json.load(outfile)
+
+		data_expiry = datetime.datetime.now() - datetime.timedelta(days=7)
+		data_expiry_string = data_expiry.strftime("%Y-%m-%d %H:%M:%S")
+
+		if data_expiry_string < data['cur_time']:
+			# data not older than 1 week, use this data
+			return data['scorecard']
+
+	return False
 
 def get_normalised_scorecard(scorecard):
 	normalised_scorecard = {}
+	score_sum = sum(scorecard.values())
+
+	for lang in scorecard.keys():
+		normalised_scorecard[lang] = float(scorecard[lang]) / score_sum * 100
 	return normalised_scorecard
