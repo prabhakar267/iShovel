@@ -11,11 +11,12 @@ from constants import GITHUB_API_URL, USERS_API
 res_path = "res/"
 
 
-def get_user_data(username, scorecard):
+def get_user_data(username, scorecard={}):
 	user_history = check_hist(username)
 	if user_history:
 		return user_history
 
+	# get new user data
 	try:
 		url = GITHUB_API_URL + USERS_API + username + "/repos?per_page=100&type=all"
 		response = requests.get(url, auth=(master_username, master_password))
@@ -41,6 +42,8 @@ def get_user_data(username, scorecard):
 			for language in language_json.keys():
 				scorecard = update_lang_score(scorecard, language, language_json[language])
 
+		# store updated data
+		store_score_card(username, scorecard)
 		return scorecard
 	except requests.exceptions.ConnectionError:
 		print "Internet connection not found!"
@@ -91,3 +94,11 @@ def get_normalised_scorecard(scorecard):
 	for lang in scorecard.keys():
 		normalised_scorecard[lang] = float(scorecard[lang]) / score_sum * 100
 	return normalised_scorecard
+
+def update_scorecard(parent_scorecard, child_scorecard):
+	for key in child_scorecard.keys():
+		if key in parent_scorecard.keys():
+			parent_scorecard[key] += child_scorecard[key]
+		else:
+			parent_scorecard[key] = child_scorecard[key]
+	return parent_scorecard
