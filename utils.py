@@ -2,6 +2,7 @@ import json
 import requests
 import os.path
 import datetime
+import sys
 from time import strftime
 
 from credentials import username as master_username, password as master_password
@@ -22,8 +23,8 @@ def get_user_data(username, scorecard={}):
 		response = requests.get(url, auth=(master_username, master_password))
 
 		if "message" in response.json():
-			raise Exception("API Limit exceeded") 
-		
+			raise Exception("API Limit exceeded")
+
 		repo_check_list = list()
 
 		ctr = 1
@@ -32,15 +33,19 @@ def get_user_data(username, scorecard={}):
 				repo_check_list.append(repo['languages_url'])
 
 		for repo_url in repo_check_list:
-			print repo_url
+			sys.stdout.write('\r\33[2K' + repo_url)
 			repo_response = requests.get(repo_url, auth=(master_username, master_password))
 			language_json = repo_response.json()
 
 			if "message" in language_json:
-				raise Exception("API Limit exceeded") 
+				raise Exception("API Limit exceeded")
 
 			for language in language_json.keys():
 				scorecard = update_lang_score(scorecard, language, language_json[language])
+
+			sys.stdout.flush()
+
+		print '\r\33[2K'
 
 		# store updated data
 		store_score_card(username, scorecard)
