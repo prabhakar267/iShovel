@@ -98,7 +98,7 @@ def get_normalised_scorecard(scorecard):
 	score_sum = sum(scorecard.values())
 
 	for lang in scorecard.keys():
-		normalised_scorecard[lang] = float(scorecard[lang]) / score_sum * 100
+		normalised_scorecard[lang] = float(scorecard[lang]) / score_sum
 	return normalised_scorecard
 
 def update_scorecard(parent_scorecard, child_scorecard):
