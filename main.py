@@ -1,19 +1,13 @@
 import random
+import ConfigParser
 from termcolor import colored
 from tabulate import tabulate
 from collections import OrderedDict
 
 from utils import get_user_data, update_scorecard, get_normalised_scorecard
 
-
-def get_rand_languages():
-	rand_lang_file = "languages"
-	with open(rand_lang_file, "r") as f:
-		lang_list = f.readlines()
-		lang_list = map(str.strip, lang_list)
-
-		return lang_list
-
+config = ConfigParser.ConfigParser()
+config.read("project.cfg")
 
 def main():
 	usernames = []
@@ -40,18 +34,22 @@ def main():
 			break
 
 	normalised_scorecard = get_normalised_scorecard(team_scorecard)
-	LANGUAGES = get_rand_languages()
+	# LANGUAGES = get_rand_languages()
+	LANGUAGES = config.get("Languages", "seed").split("\n")
+	IGNORE_LANGUAGES = config.get("Languages", "ignore").split("\n")
 
 	for lang in team_scorecard:
 		if lang not in LANGUAGES:
 			LANGUAGES.append(lang)
+
+	LANGUAGES = [lang for lang in LANGUAGES if lang not in IGNORE_LANGUAGES]
 
 	score = [0] * len(LANGUAGES)
 
 	i = 0
 	COUNT = len(LANGUAGES) * 10000
 	while i < COUNT:
-	  	ctr = random.choice(LANGUAGES) 
+	  	ctr = random.choice(LANGUAGES)
 	  	score[LANGUAGES.index(ctr)] += 1
 	  	i += 1
 

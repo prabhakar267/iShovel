@@ -88,6 +88,6 @@ ENV/
 # Rope project settings
 .ropeproject
 
-credentials.py
+project.cfg
 res/*
 !res/.gitkeep

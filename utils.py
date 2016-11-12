@@ -3,12 +3,15 @@ import requests
 import os.path
 import datetime
 import sys
+import ConfigParser
 from time import strftime
 
-from credentials import username as master_username, password as master_password
 from constants import GITHUB_API_URL, USERS_API
 
-
+config = ConfigParser.ConfigParser()
+config.read('project.cfg')
+master_username = config.get("Github", "username")
+master_password = config.get("Github", "password")
 res_path = "res/"
 
 
