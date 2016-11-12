@@ -30,20 +30,21 @@ def get_user_data(username, scorecard={}):
 		ctr = 1
 		for repo in response.json():
 			if not repo['fork']:
-				repo_check_list.append(repo['languages_url'])
+				repo_url = repo['languages_url']
+				repo_name = repo['name']
 
-		for repo_url in repo_check_list:
-			sys.stdout.write('\r\33[2K' + repo_url)
-			repo_response = requests.get(repo_url, auth=(master_username, master_password))
-			language_json = repo_response.json()
+				sys.stdout.write('Extracting \r\33[2K' + repo_name)
+				repo_response = requests.get(repo_url, auth=(master_username, master_password))
+				language_json = repo_response.json()
 
-			if "message" in language_json:
-				raise Exception("API Limit exceeded")
+				if "message" in language_json:
+					raise Exception("API Limit exceeded")
 
-			for language in language_json.keys():
-				scorecard = update_lang_score(scorecard, language, language_json[language])
+				for language in language_json.keys():
+					scorecard = update_lang_score(scorecard, language, language_json[language])
 
-			sys.stdout.flush()
+				sys.stdout.flush()
+
 
 		print '\r\33[2K'
 
