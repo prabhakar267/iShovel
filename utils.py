@@ -36,7 +36,7 @@ def get_user_data(username, scorecard={}):
 				repo_url = repo['languages_url']
 				repo_name = repo['name']
 
-				sys.stdout.write('Extracting \r\33[2K' + repo_name)
+				sys.stdout.write('\r\33[2KExtracting ' + repo_name)
 				repo_response = requests.get(repo_url, auth=(master_username, master_password))
 				language_json = repo_response.json()
 
