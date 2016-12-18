@@ -1,0 +1,12 @@
+[Languages]
+seed = Ruby
+       Perl
+       Python
+       PHP
+       Scala
+       JavaScript
+ignore = HTML
+         CSS
+[Github]
+username = XXXX
+password = XXXX

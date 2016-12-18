@@ -34,7 +34,6 @@ def main():
 			break
 
 	normalised_scorecard = get_normalised_scorecard(team_scorecard)
-	# LANGUAGES = get_rand_languages()
 	LANGUAGES = config.get("Languages", "seed").split("\n")
 	IGNORE_LANGUAGES = config.get("Languages", "ignore").split("\n")
 
@@ -74,7 +73,6 @@ def main():
 
 	print_headers = ["Language", "Percentage Score"]
 	print tabulate(final_score_list, headers= print_headers, tablefmt='orgtbl')
-
 
 if __name__ == '__main__':
 	main()
