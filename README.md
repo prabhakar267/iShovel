@@ -1,3 +1,3 @@
-# iShovel | Digs out the best language for you, disruptively
+# Project-Language-Picker
 
-### Big Reveal Coming Soon!
+### Disruptive Language Picker for Real Developers.
