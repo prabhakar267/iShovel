@@ -8,10 +8,15 @@ from time import strftime
 
 from constants import GITHUB_API_URL, USERS_API
 
-config = ConfigParser.ConfigParser()
-config.read('project.cfg')
-master_username = config.get("Github", "username")
-master_password = config.get("Github", "password")
+try:
+	config = ConfigParser.ConfigParser()
+	config.read('project.cfg')
+	master_username = config.get("Github", "username")
+	master_password = config.get("Github", "password")
+except ConfigParser.NoSectionError:
+    print "ERROR: Please setup project.cfg configuration file"
+    sys.exit()
+
 res_path = "res/"
 
 
